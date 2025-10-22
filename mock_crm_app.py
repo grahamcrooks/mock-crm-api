@@ -142,6 +142,32 @@ def update_certificate(member_number):
         "customer": customer
     })
 
+@app.route('/api/customers/<member_number>/certificate', methods=['DELETE'])
+def clear_certificate(member_number):
+    """Clear certificate data for a customer (for testing)"""
+    customer = customers_db.get(member_number)
+    
+    if not customer:
+        return jsonify({
+            "success": False,
+            "error": "Customer not found"
+        }), 404
+    
+    # Clear all certificate fields
+    customer['certificate_uploaded'] = False
+    customer['certificate_name'] = None
+    customer['certificate_upload_date'] = None
+    customer['certificate_expiry_date'] = None
+    customer['certificate_type'] = None
+    customer['certificate_issuer'] = None
+    customer['certificate_status'] = 'pending'
+    
+    return jsonify({
+        "success": True,
+        "message": f"Certificate data cleared for member {member_number}",
+        "customer": customer
+    })
+
 @app.route('/api/customers', methods=['POST'])
 def add_customer():
     """Add a new customer"""
