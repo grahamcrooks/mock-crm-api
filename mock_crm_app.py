@@ -8,9 +8,32 @@ CORS(app)
 
 # Mock customer database with certificate fields
 customers_db = {
+    "45222608": {
+        "member_number": "45222608",
+        "first_name": "TOSHIKO",
+        "last_name": "GALLIK",
+        "name": "TOSHIKO GALLIK",
+        "sex": "M",
+        "date_of_birth": "05/07/1949",
+        "email": "toshiko.gallik@example.com",
+        "mobile": "",
+        "address": "",
+        "date_joined": "2025-10-22",
+        "certificate_uploaded": False,
+        "certificate_name": None,
+        "certificate_upload_date": None,
+        "certificate_expiry_date": None,
+        "certificate_type": None,
+        "certificate_issuer": None,
+        "certificate_status": "pending"
+    },
     "MEM001": {
         "member_number": "MEM001",
+        "first_name": "John",
+        "last_name": "Smith",
         "name": "John Smith",
+        "sex": "M",
+        "date_of_birth": "01/15/1980",
         "email": "john.smith@example.com",
         "mobile": "+1-555-0101",
         "address": "123 Main St, Springfield, IL 62701",
@@ -25,56 +48,15 @@ customers_db = {
     },
     "MEM002": {
         "member_number": "MEM002",
+        "first_name": "Sarah",
+        "last_name": "Johnson",
         "name": "Sarah Johnson",
+        "sex": "F",
+        "date_of_birth": "03/22/1985",
         "email": "sarah.j@example.com",
         "mobile": "+1-555-0102",
         "address": "456 Oak Avenue, Chicago, IL 60601",
         "date_joined": "2023-03-22",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
-    },
-    "MEM003": {
-        "member_number": "MEM003",
-        "name": "Michael Chen",
-        "email": "m.chen@example.com",
-        "mobile": "+1-555-0103",
-        "address": "789 Pine Road, Boston, MA 02101",
-        "date_joined": "2023-05-10",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
-    },
-    "MEM004": {
-        "member_number": "MEM004",
-        "name": "Emily Davis",
-        "email": "emily.davis@example.com",
-        "mobile": "+1-555-0104",
-        "address": "321 Elm Street, Austin, TX 78701",
-        "date_joined": "2023-07-18",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
-    },
-    "MEM005": {
-        "member_number": "MEM005",
-        "name": "David Wilson",
-        "email": "d.wilson@example.com",
-        "mobile": "+1-555-0105",
-        "address": "654 Maple Drive, Seattle, WA 98101",
-        "date_joined": "2023-09-05",
         "certificate_uploaded": False,
         "certificate_name": None,
         "certificate_upload_date": None,
@@ -180,9 +162,17 @@ def add_customer():
         }), 409
     
     # Create new customer with default certificate fields
+    first_name = data.get('first_name', '')
+    last_name = data.get('last_name', '')
+    full_name = data.get('name', f"{first_name} {last_name}".strip())
+    
     new_customer = {
         "member_number": member_number,
-        "name": data.get('name', ''),
+        "first_name": first_name,
+        "last_name": last_name,
+        "name": full_name,
+        "sex": data.get('sex', ''),
+        "date_of_birth": data.get('date_of_birth', ''),
         "email": data.get('email', ''),
         "mobile": data.get('mobile', ''),
         "address": data.get('address', ''),
