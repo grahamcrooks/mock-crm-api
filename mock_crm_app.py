@@ -6,64 +6,67 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-# Mock customer database with certificate fields
+# Mock customer database with Certificate structure
 customers_db = {
     "45222608": {
         "member_number": "45222608",
-        "first_name": "TOSHIKO",
-        "last_name": "GALLIK",
-        "name": "TOSHIKO GALLIK",
-        "sex": "M",
-        "date_of_birth": "05/07/1949",
+        # Certificate > Clearance Certificate > Policy Section
+        "name": "Toshiko M Gallik",
+        "certificate_type": "Transfer",
+        # Certificate > Clearance Certificate > Lifetime Health Cover Section (API Updated)
+        "lhc_person": None,
+        "lhc_cae": None,
+        "lhc_total_days": None,
+        "lhc_absent_days": None,
+        "lhc_hospital_end_date": None,
+        "lhc_paid_hospital_days": None,
+        "lhc_percentage": None,
+        "lhc_override_loading_percentage": None,
+        "lhc_updated": False,
+        "lhc_update_date": None,
+        # Additional fields
         "email": "toshiko.gallik@example.com",
         "mobile": "",
         "address": "",
-        "date_joined": "2025-10-22",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
+        "date_joined": "01/05/2025"
     },
     "MEM001": {
         "member_number": "MEM001",
-        "first_name": "John",
-        "last_name": "Smith",
         "name": "John Smith",
-        "sex": "M",
-        "date_of_birth": "01/15/1980",
+        "certificate_type": "Transfer",
+        "lhc_person": None,
+        "lhc_cae": None,
+        "lhc_total_days": None,
+        "lhc_absent_days": None,
+        "lhc_hospital_end_date": None,
+        "lhc_paid_hospital_days": None,
+        "lhc_percentage": None,
+        "lhc_override_loading_percentage": None,
+        "lhc_updated": False,
+        "lhc_update_date": None,
         "email": "john.smith@example.com",
         "mobile": "+1-555-0101",
         "address": "123 Main St, Springfield, IL 62701",
-        "date_joined": "2023-01-15",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
+        "date_joined": "01/01/2023"
     },
     "MEM002": {
         "member_number": "MEM002",
-        "first_name": "Sarah",
-        "last_name": "Johnson",
         "name": "Sarah Johnson",
-        "sex": "F",
-        "date_of_birth": "03/22/1985",
+        "certificate_type": "Transfer",
+        "lhc_person": None,
+        "lhc_cae": None,
+        "lhc_total_days": None,
+        "lhc_absent_days": None,
+        "lhc_hospital_end_date": None,
+        "lhc_paid_hospital_days": None,
+        "lhc_percentage": None,
+        "lhc_override_loading_percentage": None,
+        "lhc_updated": False,
+        "lhc_update_date": None,
         "email": "sarah.j@example.com",
         "mobile": "+1-555-0102",
         "address": "456 Oak Avenue, Chicago, IL 60601",
-        "date_joined": "2023-03-22",
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
+        "date_joined": "03/01/2023"
     }
 }
 
@@ -105,9 +108,9 @@ def get_customer(member_number):
             "error": "Customer not found"
         }), 404
 
-@app.route('/api/customers/<member_number>/certificate', methods=['PUT'])
-def update_certificate(member_number):
-    """Update certificate data for a customer"""
+@app.route('/api/customers/<member_number>/lifetime-health-cover', methods=['PUT'])
+def update_lifetime_health_cover(member_number):
+    """Update Lifetime Health Cover data for a customer"""
     customer = customers_db.get(member_number)
     
     if not customer:
@@ -118,33 +121,37 @@ def update_certificate(member_number):
     
     data = request.json
     
-    # Update certificate fields
-    customer['certificate_uploaded'] = True
-    customer['certificate_upload_date'] = data.get('certificate_upload_date', datetime.now().isoformat())
+    # Update Lifetime Health Cover fields
+    customer['lhc_updated'] = True
+    customer['lhc_update_date'] = datetime.now().isoformat()
     
-    # Optional fields
-    if 'certificate_name' in data:
-        customer['certificate_name'] = data['certificate_name']
-    if 'certificate_expiry_date' in data:
-        customer['certificate_expiry_date'] = data['certificate_expiry_date']
-    if 'certificate_type' in data:
-        customer['certificate_type'] = data['certificate_type']
-    if 'certificate_issuer' in data:
-        customer['certificate_issuer'] = data['certificate_issuer']
-    if 'certificate_status' in data:
-        customer['certificate_status'] = data['certificate_status']
-    else:
-        customer['certificate_status'] = 'verified'
+    # Update provided fields
+    if 'person' in data:
+        customer['lhc_person'] = data['person']
+    if 'cae' in data:
+        customer['lhc_cae'] = data['cae']
+    if 'total_days' in data:
+        customer['lhc_total_days'] = data['total_days']
+    if 'absent_days' in data:
+        customer['lhc_absent_days'] = data['absent_days']
+    if 'hospital_end_date' in data:
+        customer['lhc_hospital_end_date'] = data['hospital_end_date']
+    if 'paid_hospital_days' in data:
+        customer['lhc_paid_hospital_days'] = data['paid_hospital_days']
+    if 'lhc_percentage' in data:
+        customer['lhc_percentage'] = data['lhc_percentage']
+    if 'override_loading_percentage' in data:
+        customer['lhc_override_loading_percentage'] = data['override_loading_percentage']
     
     return jsonify({
         "success": True,
-        "message": f"Certificate data updated for member {member_number}",
+        "message": f"Lifetime Health Cover data updated for member {member_number}",
         "customer": customer
     })
 
-@app.route('/api/customers/<member_number>/certificate', methods=['DELETE'])
-def clear_certificate(member_number):
-    """Clear certificate data for a customer (for testing)"""
+@app.route('/api/customers/<member_number>/lifetime-health-cover', methods=['DELETE'])
+def clear_lifetime_health_cover(member_number):
+    """Clear Lifetime Health Cover data for a customer (for testing)"""
     customer = customers_db.get(member_number)
     
     if not customer:
@@ -153,18 +160,21 @@ def clear_certificate(member_number):
             "error": "Customer not found"
         }), 404
     
-    # Clear all certificate fields
-    customer['certificate_uploaded'] = False
-    customer['certificate_name'] = None
-    customer['certificate_upload_date'] = None
-    customer['certificate_expiry_date'] = None
-    customer['certificate_type'] = None
-    customer['certificate_issuer'] = None
-    customer['certificate_status'] = 'pending'
+    # Clear all LHC fields
+    customer['lhc_person'] = None
+    customer['lhc_cae'] = None
+    customer['lhc_total_days'] = None
+    customer['lhc_absent_days'] = None
+    customer['lhc_hospital_end_date'] = None
+    customer['lhc_paid_hospital_days'] = None
+    customer['lhc_percentage'] = None
+    customer['lhc_override_loading_percentage'] = None
+    customer['lhc_updated'] = False
+    customer['lhc_update_date'] = None
     
     return jsonify({
         "success": True,
-        "message": f"Certificate data cleared for member {member_number}",
+        "message": f"Lifetime Health Cover data cleared for member {member_number}",
         "customer": customer
     })
 
@@ -187,29 +197,32 @@ def add_customer():
             "error": "Customer with this member number already exists"
         }), 409
     
-    # Create new customer with default certificate fields
+    # Create new customer with default LHC fields
     first_name = data.get('first_name', '')
+    middle_initial = data.get('middle_initial', '')
     last_name = data.get('last_name', '')
-    full_name = data.get('name', f"{first_name} {last_name}".strip())
+    full_name = data.get('name', f"{first_name} {middle_initial} {last_name}".strip())
     
     new_customer = {
         "member_number": member_number,
         "first_name": first_name,
+        "middle_initial": middle_initial,
         "last_name": last_name,
         "name": full_name,
         "sex": data.get('sex', ''),
         "date_of_birth": data.get('date_of_birth', ''),
+        "date_joined": data.get('date_joined', ''),
+        "date_end": data.get('date_end', ''),
         "email": data.get('email', ''),
         "mobile": data.get('mobile', ''),
         "address": data.get('address', ''),
-        "date_joined": data.get('date_joined', datetime.now().isoformat()),
-        "certificate_uploaded": False,
-        "certificate_name": None,
-        "certificate_upload_date": None,
-        "certificate_expiry_date": None,
-        "certificate_type": None,
-        "certificate_issuer": None,
-        "certificate_status": "pending"
+        "lhc_person": None,
+        "lhc_cae": None,
+        "lhc_total_absent_days": None,
+        "lhc_hospital_end_date": None,
+        "lhc_paid_hospital_days": None,
+        "lhc_updated": False,
+        "lhc_update_date": None
     }
     
     customers_db[member_number] = new_customer
