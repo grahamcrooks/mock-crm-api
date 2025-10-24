@@ -16,12 +16,12 @@ customers_db = {
         # Certificate > Clearance Certificate > Lifetime Health Cover Section (API Updated)
         "lhc_person": None,
         "lhc_cae": None,
-        "lhc_total_days": None,
-        "lhc_absent_days": None,
+        "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
         "lhc_percentage": None,
-        "lhc_override_loading_percentage": None,
+        "lhc_override": None,
+        "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
         # Additional fields
@@ -36,12 +36,12 @@ customers_db = {
         "certificate_type": "Transfer",
         "lhc_person": None,
         "lhc_cae": None,
-        "lhc_total_days": None,
-        "lhc_absent_days": None,
+        "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
         "lhc_percentage": None,
-        "lhc_override_loading_percentage": None,
+        "lhc_override": None,
+        "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
         "email": "john.smith@example.com",
@@ -55,12 +55,12 @@ customers_db = {
         "certificate_type": "Transfer",
         "lhc_person": None,
         "lhc_cae": None,
-        "lhc_total_days": None,
-        "lhc_absent_days": None,
+        "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
         "lhc_percentage": None,
-        "lhc_override_loading_percentage": None,
+        "lhc_override": None,
+        "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
         "email": "sarah.j@example.com",
@@ -130,18 +130,18 @@ def update_lifetime_health_cover(member_number):
         customer['lhc_person'] = data['person']
     if 'cae' in data:
         customer['lhc_cae'] = data['cae']
-    if 'total_days' in data:
-        customer['lhc_total_days'] = data['total_days']
-    if 'absent_days' in data:
-        customer['lhc_absent_days'] = data['absent_days']
+    if 'total_absent_days' in data:
+        customer['lhc_total_absent_days'] = data['total_absent_days']
     if 'hospital_end_date' in data:
         customer['lhc_hospital_end_date'] = data['hospital_end_date']
     if 'paid_hospital_days' in data:
         customer['lhc_paid_hospital_days'] = data['paid_hospital_days']
     if 'lhc_percentage' in data:
         customer['lhc_percentage'] = data['lhc_percentage']
-    if 'override_loading_percentage' in data:
-        customer['lhc_override_loading_percentage'] = data['override_loading_percentage']
+    if 'override' in data:
+        customer['lhc_override'] = data['override']
+    if 'loading_percentage' in data:
+        customer['lhc_loading_percentage'] = data['loading_percentage']
     
     return jsonify({
         "success": True,
@@ -163,12 +163,12 @@ def clear_lifetime_health_cover(member_number):
     # Clear all LHC fields
     customer['lhc_person'] = None
     customer['lhc_cae'] = None
-    customer['lhc_total_days'] = None
-    customer['lhc_absent_days'] = None
+    customer['lhc_total_absent_days'] = None
     customer['lhc_hospital_end_date'] = None
     customer['lhc_paid_hospital_days'] = None
     customer['lhc_percentage'] = None
-    customer['lhc_override_loading_percentage'] = None
+    customer['lhc_override'] = None
+    customer['lhc_loading_percentage'] = None
     customer['lhc_updated'] = False
     customer['lhc_update_date'] = None
     
