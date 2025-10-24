@@ -14,13 +14,13 @@ customers_db = {
         "name": "Toshiko M Gallik",
         "certificate_type": "Transfer",
         # Certificate > Clearance Certificate > Lifetime Health Cover Section (API Updated)
+        # 6 fields: Person, CAE, Total Absent Days, Hospital End Date, Paid Hospital Days, LHC % Override, Loading %
         "lhc_person": None,
         "lhc_cae": None,
         "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
-        "lhc_percentage": None,
-        "lhc_override": None,
+        "lhc_percent_override": None,
         "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
@@ -39,8 +39,7 @@ customers_db = {
         "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
-        "lhc_percentage": None,
-        "lhc_override": None,
+        "lhc_percent_override": None,
         "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
@@ -58,8 +57,7 @@ customers_db = {
         "lhc_total_absent_days": None,
         "lhc_hospital_end_date": None,
         "lhc_paid_hospital_days": None,
-        "lhc_percentage": None,
-        "lhc_override": None,
+        "lhc_percent_override": None,
         "lhc_loading_percentage": None,
         "lhc_updated": False,
         "lhc_update_date": None,
@@ -125,7 +123,7 @@ def update_lifetime_health_cover(member_number):
     customer['lhc_updated'] = True
     customer['lhc_update_date'] = datetime.now().isoformat()
     
-    # Update provided fields
+    # Update provided fields (6 total)
     if 'person' in data:
         customer['lhc_person'] = data['person']
     if 'cae' in data:
@@ -136,10 +134,8 @@ def update_lifetime_health_cover(member_number):
         customer['lhc_hospital_end_date'] = data['hospital_end_date']
     if 'paid_hospital_days' in data:
         customer['lhc_paid_hospital_days'] = data['paid_hospital_days']
-    if 'lhc_percentage' in data:
-        customer['lhc_percentage'] = data['lhc_percentage']
-    if 'override' in data:
-        customer['lhc_override'] = data['override']
+    if 'lhc_percent_override' in data:
+        customer['lhc_percent_override'] = data['lhc_percent_override']
     if 'loading_percentage' in data:
         customer['lhc_loading_percentage'] = data['loading_percentage']
     
@@ -166,8 +162,7 @@ def clear_lifetime_health_cover(member_number):
     customer['lhc_total_absent_days'] = None
     customer['lhc_hospital_end_date'] = None
     customer['lhc_paid_hospital_days'] = None
-    customer['lhc_percentage'] = None
-    customer['lhc_override'] = None
+    customer['lhc_percent_override'] = None
     customer['lhc_loading_percentage'] = None
     customer['lhc_updated'] = False
     customer['lhc_update_date'] = None
