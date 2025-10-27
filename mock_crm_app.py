@@ -10,8 +10,12 @@ CORS(app)
 customers_db = {
     "45222608": {
         "member_number": "45222608",
+        "display_member_number": "GAL12345",  # First 3 chars of last name + numbers
         # Certificate > Clearance Certificate > Policy Section
         "name": "Toshiko M Gallik",
+        "sex": "M",
+        "dob": "05/07/1943",
+        "join_date": "01/05/2025",
         "certificate_type": "Transfer",
         # Certificate > Clearance Certificate > Lifetime Health Cover Section (API Updated)
         # 6 fields: Person, CAE, Total Absent Days, Hospital End Date, Paid Hospital Days, LHC % Override, Loading %
