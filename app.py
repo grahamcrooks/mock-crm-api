@@ -36,7 +36,11 @@ customers_db = {
     },
     "MEM001": {
         "member_number": "MEM001",
+        "display_member_number": "SMI67890",  # First 3 chars of last name (Smith) + numbers
         "name": "John Smith",
+        "sex": "M",
+        "dob": "15/03/1978",
+        "join_date": "01/01/2023",
         "certificate_type": "Transfer",
         "lhc_person": None,
         "lhc_cae": None,
@@ -54,7 +58,11 @@ customers_db = {
     },
     "MEM002": {
         "member_number": "MEM002",
+        "display_member_number": "JOH23456",  # First 3 chars of last name (Johnson) + numbers
         "name": "Sarah Johnson",
+        "sex": "F",
+        "dob": "22/08/1985",
+        "join_date": "03/01/2023",
         "certificate_type": "Transfer",
         "lhc_person": None,
         "lhc_cae": None,
